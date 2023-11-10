@@ -1,0 +1,27 @@
+version: "3"
+
+x-defaults: &defaults
+  environment:
+    - TZ=Asia/Hong_Kong
+    - LANG=en_US.UTF-8
+  networks:
+    - default_bridge
+
+services:
+  nginx-rtmp:
+    <<: *defaults
+    image: nginx-rtmp:latest
+    container_name: nginx-rtmp
+    hostname: nginx-rtmp
+    build:
+      context: .
+    restart: unless-stopped
+    ports:
+      - 1935:1935
+    volumes:
+      - ./nginx.conf:/usr/local/nginx/conf/nginx.conf
+      - ./logs:/usr/local/nginx/logs
+
+networks:
+  default_bridge:
+    external: true
